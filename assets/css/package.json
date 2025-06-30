@@ -1,0 +1,43 @@
+{
+  "name": "securevault-studio",
+  "version": "1.0.0",
+  "description": "Ultimate Security Analysis Toolkit - Zero-Knowledge Architecture",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "dev": "live-server --port=8080",
+    "build": "echo 'No build process needed - static HTML/CSS/JS'",
+    "test": "echo 'Tests coming soon'",
+    "deploy": "gh-pages -d ."
+  },
+  "keywords": [
+    "security",
+    "cybersecurity",
+    "password-analyzer",
+    "crypto-tools",
+    "security-audit",
+    "penetration-testing",
+    "devsecops",
+    "offline-tools",
+    "privacy-focused",
+    "zero-knowledge"
+  ],
+  "author": {
+    "name": "Your Name",
+    "email": "your.email@example.com",
+    "url": "https://github.com/yourusername"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/SecureVault-Studio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/SecureVault-Studio/issues"
+  },
+  "homepage": "https://yourusername.github.io/SecureVault-Studio",
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "gh-pages": "^4.0.0"
+  }
+}
