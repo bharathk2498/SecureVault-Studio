@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SecureVault Studio - Ultimate Security Analysis Toolkit with Zero-Knowledge Architecture">
+    <meta name="keywords" content="security, cybersecurity, password analyzer, crypto tools, penetration testing">
+    <meta name="author" content="SecureVault Studio">
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourusername.github.io/SecureVault-Studio/">
+    <meta property="og:title" content="SecureVault Studio - Ultimate Security Analysis Toolkit">
+    <meta property="og:description" content="Professional-grade security tools that work completely offline. Password analysis, crypto toolkit, and security calculators.">
+    <meta property="og:image" content="assets/images/social-preview.png">
+    
+    <title>SecureVault Studio - Ultimate Security Analysis Toolkit</title>
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">SecureVault Studio</h1>
+            <p class="subtitle">Ultimate Security Analysis Toolkit • Zero-Knowledge Architecture</p>
+            <div class="header-stats">
+                <span class="stat-item">🛡️ 100% Private</span>
+                <span class="stat-item">⚡ Works Offline</span>
+                <span class="stat-item">🔒 Zero APIs</span>
+            </div>
+        </header>
+
+        <main class="dashboard">
+            <!-- Password Analyzer -->
+            <section class="card" id="password-card">
+                <h2 class="card-title">Smart Password Analyzer</h2>
+                <div class="input-group">
+                    <label class="input-label" for="passwordInput">Enter Password to Analyze</label>
+                    <input type="password" class="input-field" id="passwordInput" placeholder="Type your password..." autocomplete="off">
+                    <button type="button" class="toggle-visibility" onclick="togglePasswordVisibility()">👁️</button>
+                </div>
+                
+                <div class="strength-meter">
+                    <div class="strength-fill" id="strengthFill"></div>
+                </div>
+                
+                <div class="strength-info">
+                    <span class="strength-label" id="strengthLabel">Enter a password</span>
+                    <span class="strength-score" id="strengthScore">0</span>
+                </div>
+
+                <div class="security-metrics">
+                    <div class="metric">
+                        <div class="metric-value" id="lengthMetric">0</div>
+                        <div class="metric-label">Length</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="entropyMetric">0</div>
+                        <div class="metric-label">Entropy</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="complexityMetric">0</div>
+                        <div class="metric-label">Complexity</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="timeMetric">0s</div>
+                        <div class="metric-label">Crack Time</div>
+                    </div>
+                </div>
+
+                <div class="breach-status" id="breachStatus">
+                    <span class="status-indicator status-safe"></span>
+                    Breach status: Checking...
+                </div>
+
+                <div class="password-tips" id="passwordTips">
+                    <h4>💡 Improvement Tips:</h4>
+                    <ul id="tipsList"></ul>
+                </div>
+            </section>
+
+            <!-- Crypto Toolkit -->
+            <section class="card" id="crypto-card">
+                <h2 class="card-title">Crypto Toolkit</h2>
+                
+                <div class="tab-container">
+                    <div class="tabs">
+                        <button class="tab active" onclick="switchTab('hash')">Hash Generator</button>
+                        <button class="tab" onclick="switchTab('encrypt')">Text Encryption</button>
+                        <button class="tab" onclick="switchTab('sign')">Digital Signature</button>
+                    </div>
+                    
+                    <div class="tab-content active" id="hash-tab">
+                        <div class="input-group">
+                            <label class="input-label" for="hashInput">Text to Hash</label>
+                            <textarea class="input-field" id="hashInput" placeholder="Enter text to hash..." rows="3"></textarea>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label" for="hashAlgorithm">Hash Algorithm</label>
+                            <select class="input-field" id="hashAlgorithm">
+                                <option value="SHA-256">SHA-256 (Recommended)</option>
+                                <option value="SHA-512">SHA-512 (High Security)</option>
+                                <option value="SHA-1">SHA-1 (Legacy)</option>
+                                <option value="MD5">MD5 (Compatibility Only)</option>
+                            </select>
+                        </div>
+
+                        <div class="hash-output" id="hashOutput">Hash will appear here...</div>
+                        
+                        <div class="crypto-actions">
+                            <button class="btn primary" onclick="generateHash()">Generate Hash</button>
+                            <button class="btn secondary" onclick="copyToClipboard('hashOutput')">Copy Result</button>
+                            <button class="btn secondary" onclick="clearHash()">Clear</button>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="encrypt-tab">
+                        <div class="input-group">
+                            <label class="input-label" for="encryptInput">Text to Encrypt/Decrypt</label>
+                            <textarea class="input-field" id="encryptInput" placeholder="Enter text to encrypt..." rows="3"></textarea>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label" for="encryptKey">Encryption Key</label>
+                            <input type="password" class="input-field" id="encryptKey" placeholder="Enter encryption key...">
+                            <button type="button" class="btn secondary small" onclick="generateRandomKey()">Generate Random Key</button>
+                        </div>
+
+                        <div class="hash-output" id="encryptOutput">Encrypted/Decrypted text will appear here...</div>
+                        
+                        <div class="crypto-actions">
+                            <button class="btn primary" onclick="encryptText()">Encrypt</button>
+                            <button class="btn primary" onclick="decryptText()">Decrypt</button>
+                            <button class="btn secondary" onclick="copyToClipboard('encryptOutput')">Copy Result</button>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="sign-tab">
+                        <div class="input-group">
+                            <label class="input-label" for="signInput">Text to Sign/Verify</label>
+                            <textarea class="input-field" id="signInput" placeholder="Enter text to sign..." rows="3"></textarea>
+                        </div>
+                        
+                        <div class="crypto-actions">
+                            <button class="btn primary" onclick="generateKeyPair()">Generate Key Pair</button>
+                            <button class="btn primary" onclick="signText()">Sign Text</button>
+                            <button class="btn primary" onclick="verifySignature()">Verify Signature</button>
+                        </div>
+                        
+                        <div class="key-display" id="keyDisplay"></div>
+                        <div class="hash-output" id="signOutput">Signature will appear here...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Security Calculator -->
+            <section class="card" id="calculator-card">
+                <h2 class="card-title">Security Calculator</h2>
+                
+                <div class="calculator-section">
+                    <h3>Base64 Encoder/Decoder</h3>
+                    <div class="input-group">
+                        <label class="input-label" for="base64Input">Text or Base64</label>
+                        <textarea class="input-field" id="base64Input" placeholder="Enter text or base64..." rows="2"></textarea>
+                    </div>
+                    
+                    <div class="crypto-actions">
+                        <button class="btn primary" onclick="encodeBase64()">Encode</button>
+                        <button class="btn primary" onclick="decodeBase64()">Decode</button>
+                        <button class="btn secondary" onclick="copyToClipboard('base64Output')">Copy</button>
+                    </div>
+
+                    <div class="hash-output" id="base64Output">Result will appear here...</div>
+                </div>
+
+                <div class="calculator-section">
+                    <h3>CIDR Network Calculator</h3>
+                    <div class="input-group">
+                        <label class="input-label" for="cidrInput">CIDR Notation</label>
+                        <input type="text" class="input-field" id="cidrInput" placeholder="e.g., 192.168.1.0/24">
+                    </div>
+                    
+                    <div class="security-metrics" id="cidrMetrics" style="display: none;">
+                        <div class="metric">
+                            <div class="metric-value" id="networkAddr">-</div>
+                            <div class="metric-label">Network</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="broadcastAddr">-</div>
+                            <div class="metric-label">Broadcast</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="hostCount">-</div>
+                            <div class="metric-label">Hosts</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="subnetMask">-</div>
+                            <div class="metric-label">Subnet Mask</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calculator-section">
+                    <h3>Random Generator</h3>
+                    <div class="input-group">
+                        <label class="input-label" for="randomLength">Length</label>
