@@ -45,4 +45,46 @@ Thank you for your interest in contributing to SecureVault Studio! This document
 - Code comments
 - README improvements
 
-## 📋
+## 📋 Development Guidelines
+
+### Code Style
+- **ES6+** JavaScript syntax
+- **Semantic** HTML structure
+- **Modern** CSS (Flexbox/Grid)
+- **Descriptive** variable names
+- **Comprehensive** comments
+
+### Security Requirements
+- **No external API calls** (client-side only)
+- **No data transmission** (privacy-first)
+- **Secure coding practices**
+- **Input validation**
+
+### Testing
+- **Manual testing** across browsers
+- **Mobile device testing**
+- **Accessibility testing**
+- **Performance validation**
+
+## 🏆 Recognition
+
+Contributors will be:
+- **Listed** in the README
+- **Tagged** in release notes
+- **Credited** in commit messages
+- **Invited** to the contributors team
+
+## 📞 Getting Help
+
+- **GitHub Discussions** for questions
+- **Issues** for bugs/features
+- **Discord** (coming soon)
+- **Email** for sensitive matters
+
+## 📜 Code of Conduct
+
+We follow the [Contributor Covenant](https://www.contributor-covenant.org/) code of conduct.
+
+---
+
+**Thank you for making SecureVault Studio better! 🙏**
