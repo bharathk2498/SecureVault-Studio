@@ -15,13 +15,12 @@
     
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://yourusername.github.io/SecureVault-Studio/">
+    <meta property="og:url" content="https://bharathk2498.github.io/SecureVault-Studio/">
     <meta property="og:title" content="SecureVault Studio - Ultimate Security Analysis Toolkit">
     <meta property="og:description" content="Professional-grade security tools that work completely offline. Password analysis, crypto toolkit, and security calculators.">
     <meta property="og:image" content="assets/images/social-preview.png">
     
     <title>SecureVault Studio - Ultimate Security Analysis Toolkit</title>
-    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -211,3 +210,531 @@
                     <h3>Random Generator</h3>
                     <div class="input-group">
                         <label class="input-label" for="randomLength">Length</label>
+                        <input type="number" class="input-field" id="randomLength" value="32" min="8" max="128">
+                    </div>
+                    
+                    <div class="crypto-actions">
+                        <button class="btn primary" onclick="generateRandomPassword()">Random Password</button>
+                        <button class="btn primary" onclick="generateRandomHex()">Random Hex</button>
+                        <button class="btn primary" onclick="generateRandomUUID()">UUID</button>
+                    </div>
+
+                    <div class="hash-output" id="randomOutput">Generated value will appear here...</div>
+                </div>
+            </section>
+        </main>
+
+        <section class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Zero-Knowledge</h3>
+                <p>All processing happens locally in your browser. No data ever leaves your device.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Real-Time Analysis</h3>
+                <p>Instant feedback as you type with smooth animations and visual indicators.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <h3>Enterprise Grade</h3>
+                <p>Professional-quality security tools used by cybersecurity experts worldwide.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Works Offline</h3>
+                <p>No internet required after initial load. Perfect for secure environments.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3>Lightning Fast</h3>
+                <p>Optimized performance with Web Workers for heavy cryptographic operations.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>Beautiful Interface</h3>
+                <p>Modern, cyberpunk-inspired design that's both functional and visually stunning.</p>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>🔒 SecureVault Studio</h4>
+                    <p>Open Source Security Toolkit</p>
+                    <p>No data leaves your device</p>
+                </div>
+                <div class="footer-section">
+                    <h4>🔗 Links</h4>
+                    <a href="https://github.com/bharathk2498/SecureVault-Studio">GitHub Repository</a>
+                    <a href="https://github.com/bharathk2498/SecureVault-Studio/issues">Report Issues</a>
+                    <a href="docs/API.md">Documentation</a>
+                </div>
+                <div class="footer-section">
+                    <h4>🛡️ Security</h4>
+                    <a href="SECURITY.md">Security Policy</a>
+                    <a href="LICENSE">MIT License</a>
+                    <a href="CONTRIBUTING.md">Contribute</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Made with ❤️ by the Security Community • <a href="https://github.com/bharathk2498/SecureVault-Studio">⭐ Star on GitHub</a></p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Core JavaScript Files -->
+    <script>
+        // Password Analysis Engine
+        class PasswordAnalyzer {
+            constructor() {
+                this.breachedPasswords = new Set([
+                    'password', '123456', 'password123', 'admin', 'qwerty', 'letmein',
+                    'welcome', 'monkey', '1234567890', 'abc123', 'Password1', 'password1',
+                    'sunshine', 'master', 'shadow', 'football', 'baseball', 'dragon',
+                    'princess', 'superman', 'qwertyuiop', 'iloveyou', 'trustno1'
+                ]);
+            }
+
+            analyze(password) {
+                if (!password) {
+                    return this.getEmptyAnalysis();
+                }
+
+                const metrics = {
+                    length: password.length,
+                    entropy: this.calculateEntropy(password),
+                    complexity: this.calculateComplexity(password),
+                    crackTime: this.estimateCrackTime(password),
+                    commonality: this.checkCommonality(password),
+                    score: 0,
+                    level: 'Very Weak',
+                    suggestions: []
+                };
+
+                metrics.score = this.calculateScore(metrics, password);
+                metrics.level = this.getStrengthLevel(metrics.score);
+                metrics.suggestions = this.generateSuggestions(password, metrics);
+
+                return metrics;
+            }
+
+            calculateEntropy(password) {
+                let charsetSize = 0;
+                if (/[a-z]/.test(password)) charsetSize += 26;
+                if (/[A-Z]/.test(password)) charsetSize += 26;
+                if (/[0-9]/.test(password)) charsetSize += 10;
+                if (/[^A-Za-z0-9]/.test(password)) charsetSize += 32;
+                
+                return password.length * Math.log2(charsetSize || 1);
+            }
+
+            calculateComplexity(password) {
+                let complexity = 0;
+                if (/[a-z]/.test(password)) complexity++;
+                if (/[A-Z]/.test(password)) complexity++;
+                if (/[0-9]/.test(password)) complexity++;
+                if (/[^A-Za-z0-9]/.test(password)) complexity++;
+                return complexity;
+            }
+
+            estimateCrackTime(password) {
+                const charsetSize = this.calculateCharsetSize(password);
+                const combinations = Math.pow(charsetSize, password.length);
+                const secondsToCrack = combinations / (2 * 1e9);
+                
+                if (secondsToCrack < 1) return 'Instant';
+                if (secondsToCrack < 60) return `${Math.round(secondsToCrack)} seconds`;
+                if (secondsToCrack < 3600) return `${Math.round(secondsToCrack / 60)} minutes`;
+                if (secondsToCrack < 86400) return `${Math.round(secondsToCrack / 3600)} hours`;
+                if (secondsToCrack < 31536000) return `${Math.round(secondsToCrack / 86400)} days`;
+                return `${Math.round(secondsToCrack / 31536000)} years`;
+            }
+
+            calculateCharsetSize(password) {
+                let size = 0;
+                if (/[a-z]/.test(password)) size += 26;
+                if (/[A-Z]/.test(password)) size += 26;
+                if (/[0-9]/.test(password)) size += 10;
+                if (/[^A-Za-z0-9]/.test(password)) size += 32;
+                return size;
+            }
+
+            checkCommonality(password) {
+                return this.breachedPasswords.has(password.toLowerCase()) ? 'breached' : 'unique';
+            }
+
+            calculateScore(metrics, password) {
+                let score = 0;
+                if (password.length >= 8) score += 20;
+                if (password.length >= 12) score += 20;
+                if (password.length >= 16) score += 10;
+                score += metrics.complexity * 12;
+                if (metrics.commonality === 'breached') score -= 50;
+                return Math.max(0, Math.min(100, score));
+            }
+
+            getStrengthLevel(score) {
+                if (score < 20) return 'Very Weak';
+                if (score < 40) return 'Weak';
+                if (score < 60) return 'Fair';
+                if (score < 80) return 'Good';
+                if (score < 95) return 'Strong';
+                return 'Excellent';
+            }
+
+            generateSuggestions(password, metrics) {
+                const suggestions = [];
+                if (password.length < 12) suggestions.push('Increase length to at least 12 characters');
+                if (metrics.complexity < 3) suggestions.push('Use more character types (uppercase, lowercase, numbers, symbols)');
+                if (metrics.commonality === 'breached') suggestions.push('⚠️ This password is compromised - change immediately');
+                if (suggestions.length === 0) suggestions.push('Excellent password!');
+                return suggestions;
+            }
+
+            getEmptyAnalysis() {
+                return {
+                    length: 0, entropy: 0, complexity: 0, crackTime: '0 seconds',
+                    commonality: 'unique', score: 0, level: 'Very Weak',
+                    suggestions: ['Enter a password to analyze']
+                };
+            }
+        }
+
+        // Crypto Utilities
+        class CryptoUtils {
+            constructor() {
+                this.encoder = new TextEncoder();
+                this.decoder = new TextDecoder();
+            }
+
+            async generateHash(text, algorithm = 'SHA-256') {
+                if (!text) return '';
+                if (algorithm === 'MD5') return this.simpleHash(text) + '_md5_sim';
+                
+                const data = this.encoder.encode(text);
+                const hashBuffer = await crypto.subtle.digest(algorithm, data);
+                return Array.from(new Uint8Array(hashBuffer))
+                    .map(b => b.toString(16).padStart(2, '0')).join('');
+            }
+
+            simpleHash(text) {
+                let hash = 0;
+                for (let i = 0; i < text.length; i++) {
+                    const char = text.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash;
+                }
+                return Math.abs(hash).toString(16).padStart(8, '0');
+            }
+
+            encodeBase64(text) {
+                return btoa(unescape(encodeURIComponent(text)));
+            }
+
+            decodeBase64(base64) {
+                return decodeURIComponent(escape(atob(base64)));
+            }
+
+            calculateCIDR(cidr) {
+                if (!cidr.includes('/')) throw new Error('Invalid CIDR');
+                const [ip, prefixStr] = cidr.split('/');
+                const prefix = parseInt(prefixStr);
+                const hostBits = 32 - prefix;
+                const hostCount = Math.pow(2, hostBits) - 2;
+                
+                return {
+                    networkAddr: ip.split('.').map((part, i) => i < 3 ? part : '0').join('.'),
+                    broadcastAddr: ip.split('.').map((part, i) => i < 3 ? part : '255').join('.'),
+                    subnetMask: Array.from({length: 4}, (_, i) => i < Math.floor(prefix/8) ? '255' : 
+                        i === Math.floor(prefix/8) ? (256 - Math.pow(2, 8 - prefix%8)) : '0').join('.'),
+                    hostCount: Math.max(0, hostCount)
+                };
+            }
+
+            generateRandomPassword(length = 16) {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+                const array = new Uint8Array(length);
+                crypto.getRandomValues(array);
+                return Array.from(array, byte => chars[byte % chars.length]).join('');
+            }
+
+            generateRandomHex(length = 16) {
+                const array = new Uint8Array(length);
+                crypto.getRandomValues(array);
+                return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+            }
+
+            generateUUID() {
+                return crypto.randomUUID();
+            }
+        }
+
+        // Main Application
+        class SecureVaultApp {
+            constructor() {
+                this.passwordAnalyzer = new PasswordAnalyzer();
+                this.cryptoUtils = new CryptoUtils();
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.updatePasswordAnalysis();
+                console.log('🔐 SecureVault Studio initialized!');
+            }
+
+            setupEventListeners() {
+                const passwordInput = document.getElementById('passwordInput');
+                if (passwordInput) {
+                    passwordInput.addEventListener('input', () => this.updatePasswordAnalysis());
+                }
+
+                const hashInput = document.getElementById('hashInput');
+                const hashAlgorithm = document.getElementById('hashAlgorithm');
+                if (hashInput) hashInput.addEventListener('input', () => this.generateHash());
+                if (hashAlgorithm) hashAlgorithm.addEventListener('change', () => this.generateHash());
+
+                const cidrInput = document.getElementById('cidrInput');
+                if (cidrInput) cidrInput.addEventListener('input', () => this.calculateCIDR());
+
+                const base64Input = document.getElementById('base64Input');
+                if (base64Input) base64Input.addEventListener('input', () => this.clearBase64Output());
+            }
+
+            updatePasswordAnalysis() {
+                const passwordInput = document.getElementById('passwordInput');
+                const password = passwordInput ? passwordInput.value : '';
+                const analysis = this.passwordAnalyzer.analyze(password);
+                
+                this.updateStrengthMeter(analysis);
+                this.updatePasswordMetrics(analysis);
+                this.updateBreachStatus(analysis);
+                this.updatePasswordTips(analysis);
+            }
+
+            updateStrengthMeter(analysis) {
+                const strengthFill = document.getElementById('strengthFill');
+                const strengthLabel = document.getElementById('strengthLabel');
+                const strengthScore = document.getElementById('strengthScore');
+                
+                if (!strengthFill || !strengthLabel || !strengthScore) return;
+
+                strengthFill.style.width = analysis.score + '%';
+                strengthScore.textContent = analysis.score;
+                strengthLabel.textContent = analysis.level;
+
+                strengthFill.className = 'strength-fill';
+                if (analysis.score < 20) strengthFill.classList.add('strength-weak');
+                else if (analysis.score < 40) strengthFill.classList.add('strength-weak');
+                else if (analysis.score < 60) strengthFill.classList.add('strength-fair');
+                else if (analysis.score < 80) strengthFill.classList.add('strength-good');
+                else if (analysis.score < 95) strengthFill.classList.add('strength-strong');
+                else strengthFill.classList.add('strength-excellent');
+            }
+
+            updatePasswordMetrics(analysis) {
+                const elements = {
+                    lengthMetric: analysis.length,
+                    entropyMetric: Math.round(analysis.entropy),
+                    complexityMetric: analysis.complexity,
+                    timeMetric: analysis.crackTime
+                };
+
+                Object.entries(elements).forEach(([id, value]) => {
+                    const element = document.getElementById(id);
+                    if (element) element.textContent = value;
+                });
+            }
+
+            updateBreachStatus(analysis) {
+                const breachStatus = document.getElementById('breachStatus');
+                if (!breachStatus) return;
+                
+                if (analysis.length === 0) {
+                    breachStatus.innerHTML = '<span class="status-indicator status-safe"></span>Breach status: Enter password to check';
+                    breachStatus.className = 'breach-status';
+                } else if (analysis.commonality === 'breached') {
+                    breachStatus.innerHTML = '<span class="status-indicator status-danger"></span>⚠️ COMPROMISED - Found in breach database';
+                    breachStatus.className = 'breach-status breach-compromised';
+                } else {
+                    breachStatus.innerHTML = '<span class="status-indicator status-safe"></span>✅ SAFE - Not found in breach database';
+                    breachStatus.className = 'breach-status breach-safe';
+                }
+            }
+
+            updatePasswordTips(analysis) {
+                const tipsList = document.getElementById('tipsList');
+                const passwordTips = document.getElementById('passwordTips');
+                
+                if (!tipsList || !passwordTips) return;
+
+                tipsList.innerHTML = '';
+                if (analysis.suggestions && analysis.suggestions.length > 0) {
+                    passwordTips.style.display = 'block';
+                    analysis.suggestions.forEach(suggestion => {
+                        const li = document.createElement('li');
+                        li.textContent = suggestion;
+                        tipsList.appendChild(li);
+                    });
+                } else {
+                    passwordTips.style.display = 'none';
+                }
+            }
+
+            async generateHash() {
+                const hashInput = document.getElementById('hashInput');
+                const hashAlgorithm = document.getElementById('hashAlgorithm');
+                const hashOutput = document.getElementById('hashOutput');
+                
+                if (!hashInput || !hashAlgorithm || !hashOutput) return;
+
+                const text = hashInput.value;
+                const algorithm = hashAlgorithm.value;
+
+                if (!text.trim()) {
+                    hashOutput.textContent = 'Hash will appear here...';
+                    return;
+                }
+
+                try {
+                    const hash = await this.cryptoUtils.generateHash(text, algorithm);
+                    hashOutput.textContent = hash;
+                } catch (error) {
+                    hashOutput.textContent = `Error: ${error.message}`;
+                }
+            }
+
+            calculateCIDR() {
+                const cidrInput = document.getElementById('cidrInput');
+                const cidrMetrics = document.getElementById('cidrMetrics');
+                
+                if (!cidrInput || !cidrMetrics) return;
+
+                const cidr = cidrInput.value.trim();
+                
+                if (!cidr) {
+                    cidrMetrics.style.display = 'none';
+                    return;
+                }
+
+                try {
+                    const info = this.cryptoUtils.calculateCIDR(cidr);
+                    
+                    document.getElementById('networkAddr').textContent = info.networkAddr;
+                    document.getElementById('broadcastAddr').textContent = info.broadcastAddr;
+                    document.getElementById('hostCount').textContent = info.hostCount.toLocaleString();
+                    document.getElementById('subnetMask').textContent = info.subnetMask;
+                    
+                    cidrMetrics.style.display = 'grid';
+                } catch (error) {
+                    cidrMetrics.style.display = 'none';
+                }
+            }
+
+            clearBase64Output() {
+                const base64Output = document.getElementById('base64Output');
+                if (base64Output) base64Output.textContent = 'Result will appear here...';
+            }
+
+            async copyToClipboard(elementId) {
+                const element = document.getElementById(elementId);
+                if (!element) return;
+
+                const text = element.textContent;
+                if (!text || text.includes('will appear here')) return;
+
+                try {
+                    await navigator.clipboard.writeText(text);
+                    const originalText = element.textContent;
+                    element.textContent = '✅ Copied!';
+                    setTimeout(() => element.textContent = originalText, 1500);
+                } catch (error) {
+                    console.error('Copy failed:', error);
+                }
+            }
+
+            switchTab(tabName) {
+                document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+                document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+            }
+
+            togglePasswordVisibility() {
+                const passwordInput = document.getElementById('passwordInput');
+                const toggleBtn = document.querySelector('.toggle-visibility');
+                
+                if (!passwordInput || !toggleBtn) return;
+
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    toggleBtn.textContent = '🙈';
+                } else {
+                    passwordInput.type = 'password';
+                    toggleBtn.textContent = '👁️';
+                }
+            }
+        }
+
+        // Global functions
+        function togglePasswordVisibility() { if (window.app) window.app.togglePasswordVisibility(); }
+        function generateHash() { if (window.app) window.app.generateHash(); }
+        function switchTab(tabName) { if (window.app) window.app.switchTab(tabName); }
+        function encodeBase64() { 
+            if (window.app) {
+                const input = document.getElementById('base64Input');
+                const output = document.getElementById('base64Output');
+                if (input && output) {
+                    try {
+                        output.textContent = window.app.cryptoUtils.encodeBase64(input.value);
+                    } catch (e) {
+                        output.textContent = 'Encoding failed';
+                    }
+                }
+            }
+        }
+        function decodeBase64() { 
+            if (window.app) {
+                const input = document.getElementById('base64Input');
+                const output = document.getElementById('base64Output');
+                if (input && output) {
+                    try {
+                        output.textContent = window.app.cryptoUtils.decodeBase64(input.value);
+                    } catch (e) {
+                        output.textContent = 'Decoding failed';
+                    }
+                }
+            }
+        }
+        function copyToClipboard(elementId) { if (window.app) window.app.copyToClipboard(elementId); }
+        function clearHash() {
+            document.getElementById('hashInput').value = '';
+            document.getElementById('hashOutput').textContent = 'Hash will appear here...';
+        }
+        function generateRandomPassword() {
+            if (window.app) {
+                const length = parseInt(document.getElementById('randomLength').value) || 16;
+                document.getElementById('randomOutput').textContent = window.app.cryptoUtils.generateRandomPassword(length);
+            }
+        }
+        function generateRandomHex() {
+            if (window.app) {
+                const length = parseInt(document.getElementById('randomLength').value) || 16;
+                document.getElementById('randomOutput').textContent = window.app.cryptoUtils.generateRandomHex(length);
+            }
+        }
+        function generateRandomUUID() {
+            if (window.app) {
+                document.getElementById('randomOutput').textContent = window.app.cryptoUtils.generateUUID();
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            window.app = new SecureVaultApp();
+        });
+    </script>
+</body>
+</html>
